@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaludMX — Sistema Experto en Detección Temprana</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span>SaludMX</span>
+    <span class="logo-badge">SISTEMA EXPERTO</span>
+  </div>
+  <div class="header-meta">
+    Detección Temprana · Diabetes Tipo 2<br>
+    Motor de Inferencia IF-THEN
+  </div>
+</header>
+
+<div class="hero">
+  <div>
+    <div class="hero-title">
+      Detección Temprana<br>
+      <span>de Diabetes</span>
+      en México
+    </div>
+    <p class="hero-desc">
+      Sistema experto basado en inteligencia artificial que analiza síntomas clínicos para evaluar
+      el riesgo de diabetes mellitus tipo 2 — la segunda causa de muerte en México con más de
+      115,000 muertes anuales.
+    </p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="background:white;border:1.5px solid var(--border);padding:10px 18px;border-radius:3px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(15,17,23,0.55);">✓ 15 SÍNTOMAS EVALUADOS</div>
+      <div style="background:white;border:1.5px solid var(--border);padding:10px 18px;border-radius:3px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(15,17,23,0.55);">✓ MOTOR IF-THEN</div>
+      <div style="background:white;border:1.5px solid var(--border);padding:10px 18px;border-radius:3px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(15,17,23,0.55);">✓ API REST FLASK</div>
+    </div>
+  </div>
+  <div class="stats-card">
+    <h3>México en Cifras</h3>
+    <div class="stat-item">
+      <div class="stat-num">14.1%</div>
+      <div class="stat-label">Adultos con diabetes en México (ENSANUT 2022)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">115K</div>
+      <div class="stat-label">Muertes anuales por diabetes (INEGI 2022)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2ª</div>
+      <div class="stat-label">Causa de muerte en adultos mexicanos</div>
+    </div>
+  </div>
+</div>
+
+<div class="main-container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('evaluacion')">Evaluación</button>
+    <button class="tab-btn" onclick="switchTab('investigacion')">Investigación</button>
+    <button class="tab-btn" onclick="switchTab('sistema')">Cómo Funciona</button>
+    <button class="tab-btn" onclick="switchTab('base_datos')">Base de Datos</button>
+    <button class="tab-btn" onclick="switchTab('historial')">Historial</button>
+  </div>
+
+  <!-- ── TAB: EVALUACIÓN ── -->
+  <div id="tab-evaluacion" class="tab-content active">
+    <div class="eval-layout">
+      <div class="sintomas-section">
+        <h2>Seleccione sus Síntomas</h2>
+        <p>Marque todos los síntomas y factores de riesgo que apliquen. Sea lo más preciso posible.</p>
+
+        <div class="categoria-label">⚡ Síntomas Cardinales (alto valor diagnóstico)</div>
+        <div id="sintomas-cardinal"></div>
+
+        <div class="categoria-label">◈ Síntomas Secundarios</div>
+        <div id="sintomas-secundario"></div>
+
+        <div class="categoria-label">△ Factores de Riesgo</div>
+        <div id="sintomas-factor_riesgo"></div>
+      </div>
+
+      <div class="eval-panel">
+        <div class="panel-card">
+          <h3>Panel de Evaluación</h3>
+          <div class="counter-display">
+            <div class="counter-num" id="contador">0</div>
+            <div class="counter-label">síntomas seleccionados</div>
+          </div>
+          <div class="selected-list" id="selected-tags"></div>
+          <button class="btn-evaluar" id="btn-evaluar" onclick="realizarEvaluacion()" disabled>
+            Analizar Síntomas →
+          </button>
+          <button class="btn-limpiar" onclick="limpiarSeleccion()">✕ Limpiar selección</button>
+
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;opacity:0.4;text-transform:uppercase;margin-bottom:10px;">Probar API directamente</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;background:var(--cream);padding:10px;border-radius:3px;word-break:break-all;color:rgba(15,17,23,0.6);">
+              POST /api/evaluar<br>
+              {"sintomas": ["poliuria", "polidipsia"]}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: INVESTIGACIÓN ── -->
+  <div id="tab-investigacion" class="tab-content">
+    <h2 style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;margin-bottom:8px;">Investigación: 5 Principales Causas de Muerte en México</h2>
+    <p style="color:rgba(15,17,23,0.55);margin-bottom:32px;">Fuente: INEGI 2022 — Estadísticas de Mortalidad</p>
+
+    <table class="enf-table">
+      <thead>
+        <tr>
+          <th>Rango</th>
+          <th>Enfermedad</th>
+          <th>Muertes/año</th>
+          <th>Síntomas iniciales</th>
+          <th>Detección temprana</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge-num">1</span></td>
+          <td><strong>Enfermedades del corazón</strong><br><small style="color:rgba(15,17,23,0.45);">Cardiopatía isquémica</small></td>
+          <td>~140,000</td>
+          <td>Dolor torácico, disnea, palpitaciones, fatiga, edema en piernas</td>
+          <td>ECG, ecocardiograma, perfil lipídico, troponinas</td>
+        </tr>
+        <tr class="seleccionada">
+          <td><span class="badge-num" style="background:var(--teal)">2</span></td>
+          <td>
+            <strong>Diabetes Mellitus Tipo 2</strong>
+            <br><small style="color:var(--accent);font-weight:600;">✓ SELECCIONADA para el sistema</small>
+          </td>
+          <td>~115,000</td>
+          <td>Poliuria, polidipsia, polifagia, pérdida de peso, fatiga, visión borrosa, hormigueo</td>
+          <td>Glucosa en ayunas, HbA1c, PTOG — Alta detectabilidad temprana</td>
+        </tr>
+        <tr>
+          <td><span class="badge-num">3</span></td>
+          <td><strong>COVID-19 / Enf. respiratorias</strong><br><small style="color:rgba(15,17,23,0.45);">Neumonía, EPOC</small></td>
+          <td>~95,000</td>
+          <td>Fiebre, tos seca, disnea, pérdida de olfato/gusto, saturación baja</td>
+          <td>PCR, Rx tórax, saturómetro</td>
+        </tr>
+        <tr>
+          <td><span class="badge-num">4</span></td>
+          <td><strong>Tumores malignos</strong><br><small style="color:rgba(15,17,23,0.45);">Cáncer en diversas formas</small></td>
+          <td>~90,000</td>
+          <td>Pérdida de peso, fatiga, bultos palpables, cambios en piel/mucosas</td>
+          <td>Biopsias, marcadores tumorales, imagen médica</td>
+        </tr>
+        <tr>
+          <td><span class="badge-num">5</span></td>
+          <td><strong>Enfermedades del hígado</strong><br><small style="color:rgba(15,17,23,0.45);">Cirrosis hepática</small></td>
+          <td>~42,000</td>
+          <td>Ictericia, ascitis, fatiga extrema, dolor en hipocondrio derecho, edema</td>
+          <td>PFH, ecografía hepática, biopsia</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-grid" style="margin-top:32px;">
+      <div class="info-card">
+        <h3>¿Por qué Diabetes Tipo 2?</h3>
+        <p>
+          Se seleccionó la diabetes por múltiples razones: <strong>alta prevalencia</strong> (14.1% de adultos),
+          síntomas <strong>claramente identificables</strong> por el paciente,
+          <strong>alto impacto preventivo</strong> — el diagnóstico temprano puede retrasar o evitar complicaciones
+          graves (ceguera, amputaciones, insuficiencia renal), y por la <strong>factibilidad</strong>
+          de modelar su base de conocimiento con reglas if-then bien establecidas médicamente.
+        </p>
+      </div>
+      <div class="info-card">
+        <h3>Síntomas Clave del Sistema</h3>
+        <p>
+          El sistema evalúa <strong>15 indicadores</strong> clasificados en tres categorías:
+          5 síntomas cardinales (peso 2-3), que son los más diagnósticos;
+          5 síntomas secundarios (peso 2), que refuerzan el diagnóstico;
+          y 5 factores de riesgo (peso 1-2), que contextualizan el cuadro clínico.
+          La tríada clásica (poliuria + polidipsia + polifagia) activa la regla de mayor riesgo.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: CÓMO FUNCIONA ── -->
+  <div id="tab-sistema" class="tab-content">
+    <h2 style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;margin-bottom:32px;">Análisis del Sistema Experto</h2>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>1. Base de Conocimiento</h3>
+        <p>Implementada con <strong>diccionarios y listas Python</strong>. Cada síntoma es un diccionario con: <code>código</code> (ID único), <code>nombre</code> legible, <code>descripción</code>, <code>peso</code> (valor diagnóstico 1-3) y <code>categoría</code>. La base de conocimiento refleja criterios clínicos basados en las guías de la ADA y la NOM-015-SSA2 de México.</p>
+      </div>
+      <div class="info-card">
+        <h3>2. Motor de Inferencia IF-THEN</h3>
+        <p>El motor evalúa 7 reglas en cascada:<br><br>
+          • <strong>Regla 1:</strong> Clasificar síntomas y acumular score ponderado<br>
+          • <strong>Regla 2:</strong> ¿Tríada clásica completa? → Riesgo ALTO<br>
+          • <strong>Regla 3:</strong> ¿Pérdida de peso + 2 cardinales? → Riesgo ALTO<br>
+          • <strong>Regla 4:</strong> ¿Signos neurológicos? → Neuropatía probable<br>
+          • <strong>Regla 5:</strong> Determinar nivel por score total y umbrales<br>
+          • <strong>Regla 6:</strong> Generar recomendaciones contextuales<br>
+          • <strong>Regla 7:</strong> Construir explicación del razonamiento
+        </p>
+      </div>
+      <div class="info-card">
+        <h3>3. Umbrales de Decisión</h3>
+        <p>El sistema calcula un <strong>porcentaje de score</strong> sobre el máximo posible:<br><br>
+          • <strong>≥ 60%</strong> o tríada/pérdida de peso → Riesgo ALTO<br>
+          • <strong>≥ 35%</strong> o 2+ cardinales → Riesgo MODERADO<br>
+          • <strong>≥ 15%</strong> o 2+ síntomas → Riesgo BAJO<br>
+          • <strong>&lt; 15%</strong> → Riesgo Muy Bajo
+        </p>
+      </div>
+      <div class="info-card">
+        <h3>4. Generación de Decisiones</h3>
+        <p>Cada recomendación se genera por <strong>activación de reglas específicas</strong>. Si se detectan antecedentes familiares → pruebas semestrales. Si hay neuropatía probable → urgencia especial. El sistema explica <em>por qué</em> tomó cada decisión, a diferencia de un sistema de caja negra.</p>
+      </div>
+      <div class="info-card">
+        <h3>5. API REST con Flask</h3>
+        <p>Endpoints disponibles:<br><br>
+          • <code>POST /api/evaluar</code> — Recibe JSON con lista de síntomas<br>
+          • <code>GET /api/sintomas</code> — Lista todos los síntomas disponibles<br>
+          • <code>GET /api/historial</code> — Historial de evaluaciones<br>
+          • <code>GET /api/estadisticas</code> — Métricas del sistema<br>
+          • <code>GET /api/esquema_sql</code> — Esquema PostgreSQL
+        </p>
+      </div>
+      <div class="info-card">
+        <h3>6. Limitaciones del Sistema</h3>
+        <p>
+          • <strong>No es diagnóstico definitivo</strong> — requiere confirmación médica<br>
+          • <strong>Síntomas subjetivos</strong> — la percepción del paciente varía<br>
+          • <strong>Sin datos numéricos</strong> — no incorpora glucosa medida ni IMC real<br>
+          • <strong>Sin comorbilidades</strong> — no considera otras enfermedades<br>
+          • <strong>Reglas fijas</strong> — no aprende de nuevos casos<br>
+          • <strong>Sin contexto temporal</strong> — no evalúa duración de síntomas
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: BASE DE DATOS ── -->
+  <div id="tab-base_datos" class="tab-content">
+    <h2 style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;margin-bottom:8px;">Esquema PostgreSQL</h2>
+    <p style="color:rgba(15,17,23,0.55);margin-bottom:32px;">Estructura real de las tablas leída desde la base de datos</p>
+
+    <pre id="sql-schema">Cargando esquema desde PostgreSQL...</pre>
+
+    <div class="info-grid" style="margin-top:32px;">
+      <div class="info-card">
+        <h3>Tabla: enfermedades</h3>
+        <p>Catálogo de enfermedades detectables. Incluye nombre, descripción, prevalencia en México y fuentes bibliográficas. Permite escalar el sistema a múltiples enfermedades.</p>
+      </div>
+      <div class="info-card">
+        <h3>Tabla: sintomas</h3>
+        <p>Contiene cada síntoma con código único, nombre, peso diagnóstico y categoría. Referencia a enfermedades mediante FK. Permite modificar síntomas sin tocar el código.</p>
+      </div>
+      <div class="info-card">
+        <h3>Tabla: evaluaciones</h3>
+        <p>Historial completo de evaluaciones. Guarda síntomas ingresados (JSONB), nivel de riesgo, score y resultado completo para análisis retrospectivo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: HISTORIAL ── -->
+  <div id="tab-historial" class="tab-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+      <div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;margin-bottom:4px;">Historial de Evaluaciones</h2>
+        <p style="color:rgba(15,17,23,0.55);">Registros almacenados en PostgreSQL</p>
+      </div>
+      <button onclick="cargarHistorial()" style="background:var(--ink);color:var(--paper);border:none;padding:12px 20px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;border-radius:3px;">
+        ↺ Actualizar
+      </button>
+    </div>
+    <div id="historial-container">
+      <div style="text-align:center;padding:60px;color:rgba(15,17,23,0.35);font-family:'DM Mono',monospace;font-size:13px;">
+        Aún no hay evaluaciones registradas
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL DE RESULTADO ── -->
+<div class="resultado-overlay" id="resultado-overlay" onclick="cerrarResultado(event)">
+  <div class="resultado-modal" id="resultado-modal">
+    <div class="resultado-header">
+      <div>
+        <div class="riesgo-badge" id="res-badge"></div>
+        <div class="resultado-title" id="res-titulo"></div>
+      </div>
+      <button class="close-btn" onclick="cerrarModal()">×</button>
+    </div>
+    <div class="resultado-body" id="res-body"></div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
