@@ -8,16 +8,67 @@ let catalogoSintomas = {};
 // INICIALIZACIÓN
 // ============================================================
 async function init() {
+  cargarPreferencias();
   try {
+    
     const res = await fetch('/api/sintomas');
     const data = await res.json();
     catalogoSintomas = data.sintomas;
+     cargarPreferencias();
     renderizarSintomas(data.sintomas);
     cargarEsquemaSQL();
   } catch (e) {
     document.querySelector('.sintomas-section p').textContent =
       '⚠️ No se pudo conectar con el servidor. Verifica que Flask y PostgreSQL estén corriendo.';
   }
+}
+
+
+// ============================================================
+// ACCESIBILIDAD
+// ============================================================
+const MODOS = { fuente: false, contraste: false, espaciado: false };
+
+function toggleFuente() {
+  MODOS.fuente = !MODOS.fuente;
+  document.body.classList.toggle('fuente-grande', MODOS.fuente);
+  document.querySelectorAll('.acc-btn')[0].classList.toggle('active', MODOS.fuente);
+  guardarPreferencias();
+}
+
+function toggleContraste() {
+  MODOS.contraste = !MODOS.contraste;
+  document.body.classList.toggle('alto-contraste', MODOS.contraste);
+  document.querySelectorAll('.acc-btn')[1].classList.toggle('active', MODOS.contraste);
+  guardarPreferencias();
+}
+
+function toggleEspaciado() {
+  MODOS.espaciado = !MODOS.espaciado;
+  document.body.classList.toggle('espaciado-amplio', MODOS.espaciado);
+  document.querySelectorAll('.acc-btn')[2].classList.toggle('active', MODOS.espaciado);
+  guardarPreferencias();
+}
+
+function resetAccesibilidad() {
+  MODOS.fuente = MODOS.contraste = MODOS.espaciado = false;
+  document.body.classList.remove('fuente-grande', 'alto-contraste', 'espaciado-amplio');
+  document.querySelectorAll('.acc-btn').forEach(b => b.classList.remove('active'));
+  localStorage.removeItem('acc_prefs');
+}
+
+function guardarPreferencias() {
+  localStorage.setItem('acc_prefs', JSON.stringify(MODOS));
+}
+
+function cargarPreferencias() {
+  try {
+    const prefs = JSON.parse(localStorage.getItem('acc_prefs'));
+    if (!prefs) return;
+    if (prefs.fuente)    toggleFuente();
+    if (prefs.contraste) toggleContraste();
+    if (prefs.espaciado) toggleEspaciado();
+  } catch (e) {}
 }
 
 // ============================================================
